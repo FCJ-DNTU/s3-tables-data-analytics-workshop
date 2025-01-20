@@ -1,40 +1,87 @@
-+++
-title = "Thiết lập Tài Khoản AWS"
-date = 2021
-weight = 1
-chapter = false
-+++
+---
+title: "Quản Lý và Truy Vấn Dữ Liệu Với Amazon S3 Tables"
+date: "`r Sys.Date()`"
+weight: 1
+chapter: false
+---
 
-# Tạo tài khoản AWS đầu tiên
+# Quản Lý và Truy Vấn Dữ Liệu Với Amazon S3 Tables
 
-#### Tổng quan
-Trong bài lab đầu tiên này, bạn sẽ tạo mới **tài khoản AWS** đầu tiên của mình, tạo **MFA** (Multi-factor Authentication) để gia tăng bảo mật tài khoản của bạn. Bước tiếp theo bạn sẽ tạo **Admin Group**, **Admin User** để quản lý quyền truy cập vào các tài nguyên trong tài khoản của mình thay vì sử dụng user root.\
-Cuối cùng, nếu quá trình xác thực tài khoản của bạn có vấn đề, bạn sẽ được hướng dẫn hỗ trợ xác thực tài khoản với **AWS Support**.
 
-#### Tài khoản AWS (AWS Account)
-**Tài khoản AWS** là phương tiện để bạn có thể truy cập và sử dụng những tài nguyên và dịch vụ của AWS. Theo mặc định, mỗi tài khoản AWS sẽ có một *root user*. *Root user* có toàn quyền với tài khoản AWS của bạn, và quyền hạn của root user không thể bị giới hạn. Nếu bạn mới sử dụng tài khoản AWS lần đầu tiên, bạn sẽ truy cập vào tài khoản dưới danh nghĩa của *root user*.
+#### **Tổng Quan**
 
-{{% notice note %}}
-Chính vì quyền hạn của **root user** không thể bị giới hạn, AWS khuyên bạn không nên sử dụng trực tiếp *root user* cho bất kỳ công tác nào. Thay vào đó, bạn nên tạo ra một *IAM User* và trao quyền quản trị cho *IAM User* đó để dễ dàng quản lý và giảm thiểu rủi ro.
+Trong workshop này, chúng ta sẽ khám phá **Amazon S3 Tables** – một giải pháp tối ưu hóa lưu trữ dữ liệu dưới dạng bảng, được thiết kế để đáp ứng nhu cầu phân tích dữ liệu ở quy mô lớn. Một số trường hợp sử dụng tiêu biểu bao gồm: lưu trữ dữ liệu giao dịch mua bán hàng ngày và xử lý Streaming Data. Để thuận tiện trong việc truy vấn dữ liệu, Amazon S3 Tables dễ dàng tích hợp với các công cụ mạnh mẽ như **Amazon Athena, Amazon EMR, và Apache Spark.**
+
+{{< youtube bLB_cl-u3jM >}}
+
+
+---
+
+#### **Mục Tiêu**
+
+- Nắm vững cách tổ chức và quản lý dữ liệu trên Amazon S3 Tables.
+- Thực hiện tạo Amazon S3 Tables thông qua **AWS Management Console**, **Command Line Interface (CLI)**, và **API**.
+- Thực hành truy vấn dữ liệu bằng cách tích hợp với các dịch vụ như **Amazon Athena, Amazon EMR, hoặc Apache Spark**.
+- Xây dựng kỹ năng quản lý tài nguyên AWS, bao gồm thực hành dọn dẹp tài nguyên sau khi hoàn thành để tối ưu chi phí.
+
+---
+
+#### **Yêu Cầu**
+
+Trước khi bắt đầu, bạn cần đảm bảo:
+
+1. **Tài khoản AWS**:
+   - Đăng ký tài khoản và kích hoạt một **IAM User** với quyền truy cập cần thiết.
+2. **Kiến thức cơ bản**:
+   - Có hiểu biết cơ bản về Linux, Amazon S3, IAM và EC2.
+3. **Môi trường làm việc**:
+   - Máy tính cá nhân với quyền quản trị và kết nối internet ổn định.
+   - Cài đặt các công cụ sau:
+     - **AWS CLI v2**: Dùng để tương tác với AWS thông qua dòng lệnh.
+     - **jq**: Công cụ xử lý tệp JSON.
+
+---
+
+### **Pricing**
+
+{{% notice warning %}}  
+**LƯU Ý:** Việc triển khai workshop này có thể phát sinh chi phí. Để tối ưu hóa ngân sách, hãy đảm bảo quản lý tài nguyên chặt chẽ và dọn dẹp chúng sau khi hoàn thành.  
 {{% /notice %}}
 
-#### MFA (Multi-factor Authentication)
-**MFA** là một tính năng được sử dụng để gia tăng bảo mật của tài khoản AWS. Nếu MFA được kích hoạt, bạn sẽ phải nhập mã OTP (One-time Password) mỗi lần bạn đăng nhập vào tài khoản AWS.
+#### **Tài nguyên sử dụng**
+Để triển khai workshop, chúng ta sử dụng **EC2 instance loại t2.medium**, cung cấp:  
+- **2 vCPU**: Phù hợp cho các tác vụ quản lý và xử lý dữ liệu.  
+- **4 GB RAM**: Đáp ứng nhu cầu truy vấn và thao tác dữ liệu một cách hiệu quả.  
 
-#### IAM Group 
-**IAM Group**  là một công cụ quản lý người dùng (*IAM User*) của AWS. Một IAM Group có thể chứa nhiều IAM User. Các IAM User ở trong một IAM Group đều hưởng chung quyền hạn mà IAM Group đó được gán cho.
+#### **Chi phí liên quan đến S3 Tables**
+1. **Storage Pricing**:  
+   - $0.025 cho mỗi **1,000 objects**.  
 
-#### IAM User
-**IAM User** là một đơn vị người dùng của AWS. Khi bạn đăng nhập vào AWS, bạn sẽ phải đăng nhập dưới danh nghĩa của một IAM User. Nếu bạn mới đăng nhập vào AWS lần đầu tiên, bạn sẽ đăng nhập dưới danh nghĩa của *root user* (tạm dịch là người dùng gốc). Ngoài *root user* ra, bạn có thể tạo ra nhiều IAM User khác để cho phép người khác truy cập **dài hạn** vào tài nguyên AWS trong tài khoản AWS của bạn.
+2. **Requests Pricing**:  
+   - $0.005 cho mỗi **1,000 requests** (PUT, COPY, POST, LIST).  
+   - $0.0004 cho mỗi **1,000 requests** (GET, SELECT).  
 
+3. **Maintenance Pricing**:  
+   - **Compaction - Objects**: $0.004 mỗi **1,000 objects** được xử lý.  
+   - **Compaction - Data Processed**: $0.05 mỗi GB dữ liệu được xử lý.  
 
-#### AWS Support
-**AWS Support** là một đơn vị cung cấp các dịch vụ hỗ trợ khách hàng của AWS.
+![s3-tables-pricing](image.png)
 
+#### **Ước tính tổng chi phí**
+- **EC2 Instance**: Với mức giá **$0.0464/giờ**, tổng chi phí sử dụng trong **24 giờ** là khoảng **$1.11/ngày**.  
+- **S3 Tables**: Phụ thuộc vào khối lượng dữ liệu và số lượng requests trong quá trình thao tác.  
 
-#### Nội dung chính
+#### **Tối ưu hóa chi phí**
+- Giới hạn thời gian triển khai workshop và dọn dẹp tài nguyên ngay sau khi hoàn thành.  
+- Nếu quản lý tốt, tổng chi phí có thể chỉ ở mức vài đô la, đảm bảo tiết kiệm và hiệu quả cho ngân sách.  
 
-1. [Tạo tài khoản AWS](1-create-new-aws-account/)
-2. [Thiết lập MFA cho tài khoản AWS (Root)](2-mfa-setup-for-aws-user-(root)/)
-3. [Tài khoản và Nhóm Admin](3-create-admin-user-and-group/)
-4. [Hỗ trợ Xác thực Tài khoản](4-verify-new-account/)
+---
+
+### **Nội Dung Chính**
+
+1. [Giới thiệu](./1-introduction)
+2. [Chuẩn bị](<./2-preparation-(root)/>)
+3. [Truy cập buckets và tables sử dụng AWS Management Console](./3-accessing-buckets-and-tables-via-command-line/)
+4. [Truy cập buckets và tables sử dụng Command Line Interface](./4-accessing-buckets-and-tables-via-AWS-management-console/)
+5. [Kết luận](./5-conclusion/)
+6. [Dọn dẹp tài nguyên](./6-clean-up-resources/)

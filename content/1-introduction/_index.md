@@ -1,10 +1,9 @@
-+++
-title = "Hello world"
-date = 2020-05-14T00:38:32+07:00
-weight = 1
-chapter = false
-pre = "<b>1. </b>"
-+++
+---
+title: "Deploying Golang Application on EC2 Workshop"
+date: "`r Sys.Date()`"
+weight: 1
+chapter: false
+---
 
 
 **Content:**

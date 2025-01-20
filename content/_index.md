@@ -1,9 +1,9 @@
-+++
-title = "Setting up an AWS account"
-date = 2021
-weight = 1
-chapter = false
-+++
+---
+title: "Deploying Golang Application on EC2 Workshop"
+date: "`r Sys.Date()`"
+weight: 1
+chapter: false
+---
 
 # Creating your first AWS account
 
