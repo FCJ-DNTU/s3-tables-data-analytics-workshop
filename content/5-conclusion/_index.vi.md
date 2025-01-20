@@ -21,7 +21,10 @@ Workshop này đã hướng dẫn bạn cách tạo và quản lý **Amazon S3 T
 #### Lưu ý:  
 Hiện tại, tính năng **Amazon S3 Tables** chỉ khả dụng tại một số vùng AWS (như **US East (N. Virginia)** và **US West (Oregon)**). Hãy kiểm tra tài liệu AWS chính thức để biết thêm chi tiết về tính khả dụng.  
 
-#### Tài liệu tham khảo:  
+#### Tài liệu tham khảo: 
+
+{{< youtube eztA5VYH2nM >}}
+
 - **Amazon S3 Pricing**: [https://aws.amazon.com/s3/pricing/](https://aws.amazon.com/s3/pricing/)  
 - **AWS Glue Data Catalog Documentation**: [https://docs.aws.amazon.com/glue/latest/dg/populate-data-catalog.html](https://docs.aws.amazon.com/glue/latest/dg/populate-data-catalog.html)  
 - **New Amazon S3 Tables: Storage optimized for analytics workloads**: [https://aws.amazon.com/blogs/aws/new-amazon-s3-tables-storage-optimized-for-analytics-workloads/](https://aws.amazon.com/blogs/aws/new-amazon-s3-tables-storage-optimized-for-analytics-workloads/)

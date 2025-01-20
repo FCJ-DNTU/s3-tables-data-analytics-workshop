@@ -13,26 +13,26 @@ chapter: false
 1. **Truy cập Amazon S3**  
    Đăng nhập vào AWS Management Console, sau đó chọn **Table Buckets** từ thanh điều hướng bên trái.
 
-   <!-- Hình ảnh 1: Giao diện chọn Table Buckets -->
+   ![alt text](image.png)
 
 2. **Kích hoạt tích hợp dịch vụ**  
    Trước khi tạo Bucket, hãy nhấn **Enable Integration** để kích hoạt tích hợp S3 Tables với các dịch vụ phân tích dữ liệu của AWS.
 
-   <!-- Hình ảnh 2: Giao diện kích hoạt tích hợp -->
+   ![alt text](image-1.png)
 
    Khi quá trình tích hợp hoàn tất, giao diện sẽ hiển thị trạng thái **Integration enabled**.
 
-   <!-- Hình ảnh 3: Giao diện sau khi tích hợp thành công -->
+   ![alt text](image-2.png)
 
 3. **Tạo Table Bucket**  
    Nhấn **Create Table Bucket**, nhập **Table Bucket Name** trong giao diện cấu hình, sau đó nhấn **Create Table** để hoàn tất.
 
-   <!-- Hình ảnh 4: Giao diện tạo Table Bucket -->
+   ![alt text](image-3.png)
 
 4. **Xác minh Bucket vừa tạo**  
    Kiểm tra danh sách các Table Buckets để xác nhận Bucket của bạn đã được tạo thành công.
 
-   <!-- Hình ảnh 5: Giao diện kiểm tra Table Bucket -->
+   ![alt text](image-4.png)
 
 ---
 
@@ -53,7 +53,7 @@ chapter: false
    --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
    ```
 
-   <!-- Hình ảnh 6: Giao diện Spark-Shell sau khi kết nối -->
+   ![alt text](image-5.png)
 
 2. **Tạo Namespace**  
    Dùng lệnh sau để tạo namespace (ví dụ: `mydata`):
@@ -63,7 +63,7 @@ chapter: false
    spark.sql("SHOW NAMESPACES IN s3tablesbucket").show()
    ```
 
-   <!-- Hình ảnh 7: Giao diện sau khi tạo namespace -->
+   ![alt text](image-6.png)
 
 3. **Tạo Table**  
    Tạo bảng trong namespace đã tạo:
@@ -77,7 +77,7 @@ chapter: false
    """)
    ```
 
-   <!-- Hình ảnh 8: Giao diện sau khi tạo table -->
+   ![alt text](image-7.png)
 
 4. **Thêm dữ liệu mẫu**  
    Chèn dữ liệu mẫu vào bảng:
@@ -91,7 +91,7 @@ chapter: false
      """)
    ```
 
-   <!-- Hình ảnh 9: Giao diện sau khi thêm dữ liệu -->
+   <![alt text](image-8.png)
 
 5. **Truy vấn dữ liệu**  
    Truy vấn dữ liệu từ bảng để kiểm tra:
@@ -100,8 +100,8 @@ chapter: false
    spark.sql("SELECT * FROM s3tablesbucket.mydata.table1").show()
    ```
 
-   <!-- Hình ảnh 10: Giao diện hiển thị kết quả truy vấn -->
+   ![alt text](image-9.png)
 
 ---
 
-Bằng cách sử dụng AWS Management Console và Apache Spark, bạn có thể dễ dàng tạo và thao tác với các Table Buckets trên Amazon S3. Điều này mang đến khả năng lưu trữ, xử lý và phân tích dữ liệu lớn hiệu quả hơn.
+Bằng cách sử dụng **AWS Management Console và Apache Spark**, bạn có thể dễ dàng tạo và thao tác với các Table Buckets trên Amazon S3. Điều này mang đến khả năng lưu trữ, xử lý và phân tích dữ liệu lớn hiệu quả hơn.

@@ -40,35 +40,35 @@ aws s3tables delete-table-bucket \
 --table-bucket-arn arn:aws:s3tables:us-east-1:242201280000:bucket/jbarr-table-bucket-2
 ```
 
-<!-- Hình ảnh 1 -->
+![alt text](image.png)
 
 4. **Xóa EC2 Instance**
 
    Truy cập EC2 Dashboard, chọn EC2 instance của bạn và sử dụng hành động "Terminate" để xóa instance.
 
-<!-- Hình ảnh 2 -->
+![alt text](image-1.png)
 
-<!-- Hình ảnh 3 -->
+![alt text](image-2.png)
 
 5. **Xóa Security Group**
 
    Truy cập VPC Dashboard, chọn "Security Groups" trong thanh điều hướng bên trái, chọn security group `demo-s3-tables-sg`, nhấn vào dropdown actions, chọn "Delete Security Group."
 
-<!-- Hình ảnh 4 -->
+![alt text](image-3.png)
 
 6. **Xóa VPC**
 
    Truy cập VPC Dashboard, chọn "Your VPCs," chọn VPC `demo-s3-table-vpc`, nhấn vào dropdown actions, chọn "Delete VPC," nhập `delete` để xác nhận và tiếp tục xóa.
 
-<!-- Hình ảnh 5 -->
+![alt text](image-4.png)
 
-<!-- Hình ảnh 6 -->
+![alt text](image-5.png)
 
 7. **Xóa IAM Role**
 
    Truy cập IAM Service Dashboard, chọn "Roles" trong thanh điều hướng bên trái, tìm kiếm `ec2-s3-tables-role`, và chọn "Delete."
 
-<!-- Hình ảnh 7 -->
+![alt text](image-6.png)
 
 ---
 

@@ -17,13 +17,10 @@ Sau khi thiết lập các công cụ cần thiết, bạn có thể tạo và q
 
    ```bash
    $ aws s3tables create-table-bucket --name jbarr-table-bucket-2 | jq .arn
-   ```
-   Kết quả sẽ trả về ARN của Bucket vừa tạo:
-   ```json
    "arn:aws:s3tables:us-east-2:123456789012:bucket/jbarr-table-bucket-2"
    ```
 
-   <!-- Hình ảnh 1: Lệnh tạo Table Bucket -->
+![alt text](image.png)
 
 2. **Thiết lập Biến Môi Trường**  
    Lưu ARN của Bucket vào một biến môi trường để dễ thao tác:
@@ -38,9 +35,10 @@ Sau khi thiết lập các công cụ cần thiết, bạn có thể tạo và q
    ```bash
    $ aws s3tables list-table-buckets | jq .tableBuckets[].arn
    ```
-   Kết quả hiển thị danh sách ARN của các Table Buckets.
 
-   <!-- Hình ảnh 2: Lệnh liệt kê Table Buckets -->
+   Kết quả hiển thị danh sách ARN của các Table Buckets:
+
+![alt text](image-1.png)
 
 ---
 
@@ -55,7 +53,7 @@ Bạn có thể thao tác với các Tables trong Bucket thông qua Apache Spark
    $ sudo dnf install java-17-amazon-corretto
    ```
 
-   <!-- Hình ảnh 3: Cài đặt Java 17 -->
+   ![alt text](image-2.png)
 
 2. **Tải và Cài đặt Apache Spark**  
    Tải phiên bản mới nhất của Apache Spark:
@@ -65,55 +63,62 @@ Bạn có thể thao tác với các Tables trong Bucket thông qua Apache Spark
    $ tar -xvf spark-3.5.4-bin-hadoop3.tgz
    ```
 
-   <!-- Hình ảnh 4 & 5: Tải và giải nén Spark -->
+![alt text](image-3.png)
 
-   Thêm đường dẫn Spark binary vào `PATH`:
+Thêm đường dẫn Spark binary vào `PATH`:
 
-   ```bash
-   $ vi ~/.bashrc
-   ```
-   Thêm dòng sau vào cuối file:
-   ```bash
-   export PATH=$PATH:/home/ec2-user/spark-3.5.4-bin-hadoop3/bin/
-   ```
-   Lưu và thoát (`ESC` > `:wq`), sau đó kiểm tra phiên bản Spark:
+```bash
+$ vi ~/.bashrc
+```
 
-   ```bash
-   $ spark-shell --version
-   ```
+Thêm dòng sau vào cuối file:
 
-   <!-- Hình ảnh 6 & 7: Thêm Spark vào PATH và kiểm tra phiên bản -->
+```bash
+export PATH=$PATH:/home/ec2-user/spark-3.5.4-bin-hadoop3/bin/
+```
+
+![alt text](image-4.png)
+
+Lưu và thoát (`ESC` > `:wq`), sau đó kiểm tra phiên bản Spark:
+
+```bash
+$ spark-shell --version
+```
+
+![alt text](image-5.png)
 
 3. **Sử dụng Spark-Shell để Quản lý Tables**  
-   Khởi chạy Spark-Shell với Apache Iceberg và cấu hình cần thiết. Thay ARN bằng giá trị ARN của Bucket của bạn:
+    Khởi chạy Spark-Shell với Apache Iceberg và cấu hình cần thiết. Thay ARN bằng giá trị ARN của Bucket của bạn:
+
+   Thay thế `<aws:s3tables:us-east-1:0123456789012:bucket/jbarr-table-bucket-2>` bằng ARN của Table Bucket bạn đã tạo
 
    ```bash
    $ spark-shell \
-   --packages org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.6.1,software.amazon.s3tables:s3-tables-catalog-for-iceberg-runtime:0.1.3 \
+   --packages org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.6.1,software.amazon.s3tables:s3-tables-catalog-for-iceberg-runtime:0.1.3,software.amazon.awssdk:s3:2.20.42,software.amazon.awssdk:sts:2.20.42,software.amazon.awssdk:kms:2.20.42,software.amazon.awssdk:glue:2.20.42,software.amazon.awssdk:dynamodb:2.20.42  \
    --conf spark.sql.catalog.s3tablesbucket=org.apache.iceberg.spark.SparkCatalog \
    --conf spark.sql.catalog.s3tablesbucket.catalog-impl=software.amazon.s3tables.iceberg.S3TablesCatalog \
-   --conf spark.sql.catalog.s3tablesbucket.warehouse=arn:aws:s3tables:us-east-1:123456789012:bucket/jbarr-table-bucket-2 \
+   --conf spark.sql.catalog.s3tablesbucket.warehouse=<arn:aws:s3tables:us-east-1:123456789012:bucket/jbarr-table-bucket-2> \
    --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
    ```
 
-   <!-- Hình ảnh 8: Sử dụng Spark-Shell -->
+   ![alt text](image-6.png)
 
 4. **Tạo Namespace và Table**  
    Tạo namespace và table trong Bucket:
 
    ```scala
-   spark.sql("""CREATE NAMESPACE IF NOT EXISTS s3tablesbucket.mydata""")
-   spark.sql("""CREATE TABLE IF NOT EXISTS s3tablesbucket.mydata.table1
+   $ spark.sql("""CREATE NAMESPACE IF NOT EXISTS s3tablesbucket.mydata""")
+   $ spark.sql("""CREATE TABLE IF NOT EXISTS s3tablesbucket.mydata.table1
    (id INT, name STRING, value INT) USING iceberg""")
    ```
 
-   <!-- Hình ảnh 9 & 10: Tạo namespace và table -->
+   ![alt text](image-7.png)
 
 5. **Chèn và Truy Vấn Dữ Liệu**  
    Chèn dữ liệu mẫu và truy vấn để kiểm tra:
 
    ```scala
-   spark.sql("""INSERT INTO s3tablesbucket.mydata.table1
+   $ spark.sql("""INSERT INTO s3tablesbucket.mydata.table1
      VALUES
      (1, 'Jeff', 100),
      (2, 'Carmen', 200),
@@ -122,8 +127,8 @@ Bạn có thể thao tác với các Tables trong Bucket thông qua Apache Spark
    spark.sql("SELECT * FROM s3tablesbucket.mydata.table1").show()
    ```
 
-   <!-- Hình ảnh 11: Kết quả truy vấn Table -->
+   ![alt text](image-8.png)
 
 ---
 
-Bằng cách sử dụng AWS CLI và Apache Spark, bạn đã tạo và thao tác thành công với S3 Table Buckets. Công cụ này mang lại hiệu quả cao trong việc quản lý và phân tích dữ liệu lớn.
+Bằng cách sử dụng **AWS CLI và Apache Spark**, bạn đã tạo và thao tác thành công với S3 Table Buckets. Công cụ này mang lại hiệu quả cao trong việc quản lý và phân tích dữ liệu lớn.
