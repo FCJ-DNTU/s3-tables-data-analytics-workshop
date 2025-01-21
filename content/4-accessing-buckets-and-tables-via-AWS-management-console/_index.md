@@ -40,17 +40,17 @@ chapter: false
 
 To work with the Table Bucket you created, you can use Apache Spark as outlined in [Section 3](../3-accessing-buckets-and-tables-via-command-line/#setting-up-and-using-apache-spark-to-manage-tables). SSH into your EC2 Instance and launch Spark-Shell with the necessary packages.
 
-1. **Access Spark-Shell**  
+1. **Access Spark-Shell**
 
    Use the following command, replacing `<aws:s3tables:us-east-1:0123456789012:bucket/jbarr-table-bucket-3>` with the ARN of your created Table Bucket:
 
    ```bash
    spark-shell \
-   --packages org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.6.1,software.amazon.s3tables:s3-tables-catalog-for-iceberg-runtime:0.1.3,software.amazon.awssdk:s3:2.20.42,software.amazon.awssdk:sts:2.20.42,software.amazon.awssdk:kms:2.20.42,software.amazon.awssdk:glue:2.20.42,software.amazon.awssdk:dynamodb:2.20.42 \
-   --conf scala> spark.sql.catalog.s3tablesbucket=org.apache.iceberg.spark.SparkCatalog \
-   --conf scala> spark.sql.catalog.s3tablesbucket.catalog-impl=software.amazon.s3tables.iceberg.S3TablesCatalog \
-   --conf scala> spark.sql.catalog.s3tablesbucket.warehouse=<aws:s3tables:us-east-1:0123456789012:bucket/jbarr-table-bucket-3> \
-   --conf scala> spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
+   --packages org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.6.1,software.amazon.s3tables:s3-tables-catalog-for-iceberg-runtime:0.1.3,software.amazon.awssdk:s3:2.20.42,software.amazon.awssdk:sts:2.20.42,software.amazon.awssdk:kms:2.20.42,software.amazon.awssdk:glue:2.20.42,software.amazon.awssdk:dynamodb:2.20.42  \
+   --conf spark.sql.catalog.s3tablesbucket=org.apache.iceberg.spark.SparkCatalog \
+   --conf spark.sql.catalog.s3tablesbucket.catalog-impl=software.amazon.s3tables.iceberg.S3TablesCatalog \
+   --conf spark.sql.catalog.s3tablesbucket.warehouse=<aws:s3tables:us-east-1:0123456789012:bucket/jbarr-table-bucket-3> \
+   --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
    ```
 
    ![accessing-spark-shell](/images/3-accessing-buckets-and-tables-via-command-line/image-6.png)
@@ -59,22 +59,17 @@ To work with the Table Bucket you created, you can use Apache Spark as outlined 
     Use the following command to create a namespace (e.g., `mydata`):
 
    ```scala
-   scala> spark.sql("""CREATE NAMESPACE IF NOT EXISTS s3tablesbucket.mydata""")
-   res1: org.apache.spark.sql.DataFrame = []
-
-   scala> spark.sql("SHOW NAMESPACES IN s3tablesbucket").show()
-   +----------+
-   |namespace |
-   +----------+
-   | mydata   |
-   +----------+
+   spark.sql("""CREATE NAMESPACE IF NOT EXISTS s3tablesbucket.mydata""")
+   spark.sql("SHOW NAMESPACES IN s3tablesbucket").show()
    ```
+
+   ![namespace-result](/images/4-accessing-buckets-and-tables-via-AWS-management-console/image-5.png)
 
 3. **Create a Table**  
    Create a table in the namespace you just created:
 
    ```scala
-   scala> spark.sql("""CREATE TABLE IF NOT EXISTS s3tablesbucket.mydata.table1
+   spark.sql("""CREATE TABLE IF NOT EXISTS s3tablesbucket.mydata.table1
    (id INT,
    name STRING,
    value INT)
@@ -86,7 +81,7 @@ To work with the Table Bucket you created, you can use Apache Spark as outlined 
    Insert sample data into the table:
 
    ```scala
-   scala> spark.sql("""INSERT INTO s3tablesbucket.mydata.table1
+   spark.sql("""INSERT INTO s3tablesbucket.mydata.table1
      VALUES
      (1, 'Alice', 100),
      (2, 'Bob', 200),
@@ -98,7 +93,7 @@ To work with the Table Bucket you created, you can use Apache Spark as outlined 
    Query the data from the table to verify the insertion:
 
    ```scala
-   scala> spark.sql("SELECT * FROM s3tablesbucket.mydata.table1").show()
+   spark.sql("SELECT * FROM s3tablesbucket.mydata.table1").show()
    ```
 
    ![query-data](/images/4-accessing-buckets-and-tables-via-AWS-management-console/image-9.png)

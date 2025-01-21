@@ -16,7 +16,7 @@ Sau khi thiết lập các công cụ cần thiết, bạn có thể tạo và q
    Trong phiên SSH trên EC2 Instance, chạy lệnh sau để tạo Table Bucket:
 
    ```bash
-   $ aws s3tables create-table-bucket --name jbarr-table-bucket-2 | jq .arn
+   aws s3tables create-table-bucket --name jbarr-table-bucket-2 | jq .arn
    "arn:aws:s3tables:us-east-2:123456789012:bucket/jbarr-table-bucket-2"
    ```
 
@@ -24,14 +24,14 @@ Sau khi thiết lập các công cụ cần thiết, bạn có thể tạo và q
    Lưu ARN của Bucket vào một biến môi trường để dễ thao tác:
 
    ```bash
-   $ export ARN="arn:aws:s3tables:us-east-2:123456789012:bucket/jbarr-table-bucket-2"
+   export ARN="arn:aws:s3tables:us-east-2:123456789012:bucket/jbarr-table-bucket-2"
    ```
 
 3. **Liệt Kê Các Table Buckets**  
    Xem danh sách các Table Buckets đã tạo:
 
    ```bash
-   $ aws s3tables list-table-buckets | jq .tableBuckets[].arn
+   aws s3tables list-table-buckets | jq .tableBuckets[].arn
    "arn:aws:s3tables:us-east-2:123456789012:bucket/jbarr-table-bucket-2"
    ```
 
@@ -50,7 +50,7 @@ Bạn có thể thao tác với các Tables trong Bucket thông qua [Apache Spar
    Apache Spark yêu cầu Java 8/11/17 để chạy. Cài đặt **Java 17** bằng lệnh sau:
 
    ```bash
-   $ sudo dnf install java-17-amazon-corretto
+   sudo dnf install java-17-amazon-corretto
    ```
 
    ![install-java-17](/images/3-accessing-buckets-and-tables-via-command-line/image-2.png)
@@ -59,8 +59,8 @@ Bạn có thể thao tác với các Tables trong Bucket thông qua [Apache Spar
    Tải phiên bản mới nhất của Apache Spark:
 
    ```bash
-   $ wget https://dlcdn.apache.org/spark/spark-3.5.4/spark-3.5.4-bin-hadoop3.tgz
-   $ tar -xvf spark-3.5.4-bin-hadoop3.tgz
+   wget https://dlcdn.apache.org/spark/spark-3.5.4/spark-3.5.4-bin-hadoop3.tgz
+   tar -xvf spark-3.5.4-bin-hadoop3.tgz
    ```
 
 ![install-spark](/images/3-accessing-buckets-and-tables-via-command-line/image-3.png)
@@ -68,7 +68,7 @@ Bạn có thể thao tác với các Tables trong Bucket thông qua [Apache Spar
 Thêm đường dẫn Spark binary vào `PATH`:
 
 ```bash
-$ vi ~/.bashrc
+vi ~/.bashrc
 ```
 
 Thêm dòng sau vào cuối file:
@@ -82,7 +82,7 @@ export PATH=$PATH:/home/ec2-user/spark-3.5.4-bin-hadoop3/bin/
 Lưu và thoát (`ESC` > `:wq`), sau đó kiểm tra phiên bản Spark:
 
 ```bash
-$ spark-shell --version
+spark-shell --version
 ```
 
 ![spark-version](/images/3-accessing-buckets-and-tables-via-command-line/image-5.png)
@@ -93,7 +93,7 @@ $ spark-shell --version
    Thay thế `<aws:s3tables:us-east-1:0123456789012:bucket/jbarr-table-bucket-2>` bằng ARN của Table Bucket bạn đã tạo
 
    ```bash
-   $ spark-shell \
+   spark-shell \
    --packages org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.6.1,software.amazon.s3tables:s3-tables-catalog-for-iceberg-runtime:0.1.3,software.amazon.awssdk:s3:2.20.42,software.amazon.awssdk:sts:2.20.42,software.amazon.awssdk:kms:2.20.42,software.amazon.awssdk:glue:2.20.42,software.amazon.awssdk:dynamodb:2.20.42  \
    --conf spark.sql.catalog.s3tablesbucket=org.apache.iceberg.spark.SparkCatalog \
    --conf spark.sql.catalog.s3tablesbucket.catalog-impl=software.amazon.s3tables.iceberg.S3TablesCatalog \
@@ -107,8 +107,8 @@ $ spark-shell --version
    Tạo namespace và table trong Bucket:
 
    ```scala
-   $ spark.sql("""CREATE NAMESPACE IF NOT EXISTS s3tablesbucket.mydata""")
-   $ spark.sql("""CREATE TABLE IF NOT EXISTS s3tablesbucket.mydata.table1
+   spark.sql("""CREATE NAMESPACE IF NOT EXISTS s3tablesbucket.mydata""")
+   spark.sql("""CREATE TABLE IF NOT EXISTS s3tablesbucket.mydata.table1
    (id INT, name STRING, value INT) USING iceberg""")
    ```
 
@@ -118,7 +118,7 @@ $ spark-shell --version
    Chèn dữ liệu mẫu và truy vấn để kiểm tra:
 
    ```scala
-   $ spark.sql("""INSERT INTO s3tablesbucket.mydata.table1
+   spark.sql("""INSERT INTO s3tablesbucket.mydata.table1
      VALUES
      (1, 'Jeff', 100),
      (2, 'Carmen', 200),

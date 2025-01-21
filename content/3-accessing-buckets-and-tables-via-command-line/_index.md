@@ -19,7 +19,7 @@ This guide explains how to create and manage S3 Table Buckets using [AWS CLI](ht
    In your EC2 SSH session, run the following command to create a Table Bucket:
 
    ```bash
-   $ aws s3tables create-table-bucket --name jbarr-table-bucket-2 | jq .arn
+   aws s3tables create-table-bucket --name jbarr-table-bucket-2 | jq .arn
    "arn:aws:s3tables:us-east-2:123456789012:bucket/jbarr-table-bucket-2"
    ```
 
@@ -28,7 +28,7 @@ This guide explains how to create and manage S3 Table Buckets using [AWS CLI](ht
    Save the ARN of the bucket in an environment variable:
 
    ```bash
-   $ export ARN="arn:aws:s3tables:us-east-2:123456789012:bucket/jbarr-table-bucket-2"
+   export ARN="arn:aws:s3tables:us-east-2:123456789012:bucket/jbarr-table-bucket-2"
    ```
 
 3. **List Table Buckets:**
@@ -36,7 +36,7 @@ This guide explains how to create and manage S3 Table Buckets using [AWS CLI](ht
    View all created Table Buckets:
 
    ```bash
-   $ aws s3tables list-table-buckets | jq .tableBuckets[].arn
+   aws s3tables list-table-buckets | jq .tableBuckets[].arn
    "arn:aws:s3tables:us-east-2:123456789012:bucket/jbarr-table-bucket-2"
    ```
 
@@ -55,7 +55,7 @@ This guide explains how to create and manage S3 Table Buckets using [AWS CLI](ht
    Install **Java 17** using the following command:
 
    ```bash
-   $ sudo dnf install java-17-amazon-corretto
+   sudo dnf install java-17-amazon-corretto
    ```
 
    ![install-java-17](/images/3-accessing-buckets-and-tables-via-command-line/image-2.png)
@@ -65,14 +65,14 @@ This guide explains how to create and manage S3 Table Buckets using [AWS CLI](ht
    Download the latest version of **Apache Spark**:
 
    ```bash
-   $ wget https://dlcdn.apache.org/spark/spark-3.5.4/spark-3.5.4-bin-hadoop3.tgz
-   $ tar -xvf spark-3.5.4-bin-hadoop3.tgz
+   wget https://dlcdn.apache.org/spark/spark-3.5.4/spark-3.5.4-bin-hadoop3.tgz
+   tar -xvf spark-3.5.4-bin-hadoop3.tgz
    ```
 
    Add Spark binaries to the `PATH` environment variable:
 
    ```bash
-   $ vi ~/.bashrc
+   vi ~/.bashrc
    ```
 
    Add this line to the end of the file:
@@ -84,21 +84,21 @@ This guide explains how to create and manage S3 Table Buckets using [AWS CLI](ht
    Save and exit (`ESC` > `:wq`). Verify Spark installation:
 
    ```bash
-   $ spark-shell --version
+   spark-shell --version
    ```
 
    ![spark-version](/images/3-accessing-buckets-and-tables-via-command-line/image-5.png)
 
 3. **Use Spark-Shell to Manage Tables:**
 
-   Launch **Spark-Shell** with the required configuration. Replace `<arn>` with your Table Bucket ARN:
+   Launch **Spark-Shell** with the required configuration. Replace `<aws:s3tables:us-east-1:0123456789012:bucket/jbarr-table-bucket-3>` with your Table Bucket ARN:
 
-   ```bash
-   $ spark-shell \
-   --packages org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.6.1,software.amazon.s3tables:s3-tables-catalog-for-iceberg-runtime:0.1.3,software.amazon.awssdk:s3:2.20.42,software.amazon.awssdk:sts:2.20.42,software.amazon.awssdk:kms:2.20.42,software.amazon.awssdk:glue:2.20.42,software.amazon.awssdk:dynamodb:2.20.42 \
+  ```bash
+   spark-shell \
+   --packages org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.6.1,software.amazon.s3tables:s3-tables-catalog-for-iceberg-runtime:0.1.3,software.amazon.awssdk:s3:2.20.42,software.amazon.awssdk:sts:2.20.42,software.amazon.awssdk:kms:2.20.42,software.amazon.awssdk:glue:2.20.42,software.amazon.awssdk:dynamodb:2.20.42  \
    --conf spark.sql.catalog.s3tablesbucket=org.apache.iceberg.spark.SparkCatalog \
    --conf spark.sql.catalog.s3tablesbucket.catalog-impl=software.amazon.s3tables.iceberg.S3TablesCatalog \
-   --conf spark.sql.catalog.s3tablesbucket.warehouse=<arn:aws:s3tables:us-east-2:123456789012:bucket/jbarr-table-bucket-2> \
+   --conf spark.sql.catalog.s3tablesbucket.warehouse=<aws:s3tables:us-east-1:0123456789012:bucket/jbarr-table-bucket-3> \
    --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
    ```
 
@@ -109,8 +109,8 @@ This guide explains how to create and manage S3 Table Buckets using [AWS CLI](ht
    Use Spark-SQL to create a namespace and a table:
 
    ```scala
-   $ spark.sql("""CREATE NAMESPACE IF NOT EXISTS s3tablesbucket.mydata""")
-   $ spark.sql("""CREATE TABLE IF NOT EXISTS s3tablesbucket.mydata.table1
+   spark.sql("""CREATE NAMESPACE IF NOT EXISTS s3tablesbucket.mydata""")
+   spark.sql("""CREATE TABLE IF NOT EXISTS s3tablesbucket.mydata.table1
    (id INT, name STRING, value INT) USING iceberg""")
    ```
 
@@ -121,7 +121,7 @@ This guide explains how to create and manage S3 Table Buckets using [AWS CLI](ht
    Insert sample data and query it to verify:
 
    ```scala
-   $ spark.sql("""INSERT INTO s3tablesbucket.mydata.table1
+   spark.sql("""INSERT INTO s3tablesbucket.mydata.table1
      VALUES
      (1, 'Jeff', 100),
      (2, 'Carmen', 200),
