@@ -1,52 +1,70 @@
 ---
-title: "Deploying Golang Application on EC2 Workshop"
+title: "Introduction"
 date: "`r Sys.Date()`"
 weight: 1
+pre: "<b>1. </b>"
 chapter: false
 ---
 
+### 1. Introduction 
 
-**Content:**
-- [Create an AWS Account](#create-an-aws-account)
-- [Add a payment method](#add-a-payment-method)
-- [Verify your phone number](#verify-your-phone-number)
-- [Choose an AWS Support plan](#choose-an-aws-support-plan)
-- [Wait for your account to be activated](#wait-for-your-account-to-be-activated)
+#### What is Amazon S3?  
 
-#### Create an AWS Account
+**Amazon Simple Storage Service (Amazon S3)** is a leading object storage service known for its scalability, high availability, and strong security. It supports diverse use cases, such as data lakes, websites, mobile applications, backups, disaster recovery, and big data analytics.  
 
-1. Go to the [Amazon Web Services (AWS) home page](https://aws.amazon.com/).
-2. Click **Create an AWS Account** in the top right corner. 
-   - **Note:**  If you signed in to AWS recently, click **Sign in to the Console**. If **Create a new AWS account** isn't visible, first click on **Sign in to a different account**, and then click **Create a new AWS account**.
-3. Enter the account information and and then select **Continue**. 
-   - **Important**: Make sure you enter the correct information, especially email.
-4. Select the type of account. 
-   - **Note**: Personal and Professional both share the same features.
-5. Enter your company or personal information.
-   - **Important**: For professional AWS accounts, it's a best practice to enter the company phone number rather than a personal cell phone.
-6. Read and agree to the [AWS Customer Agreement](https://aws.amazon.com/agreement/).
-7. Select **Create Account** and **Continue**.
+#### What are Amazon S3 Tables?  
 
-#### Add a payment method
+![s3-tables](/images/1-introduction/image-1.png)  
 
-On the Payment Information page, enter the information about your payment method, and then choose **Verify and Add**.
-- **Note:** If you want to use a different billing address for your AWS billing information, select **Use a new address** before you select **Verify and Add**.
+**Amazon S3 Tables** introduce the first cloud object storage solution with built-in support for **[Apache Iceberg](https://iceberg.apache.org/)**. S3 Tables streamline storing and managing structured, tabular data at scale, offering significant optimization and performance enhancements.  
 
-#### Verify your phone number
-1. Choose your country or region code from the list.
-2. Enter a phone number where you can be reached in the next few minutes.
-3. Enter the code displayed in the CAPTCHA, and then submit.
-4. In a few moments, an automated system contacts you.
-5. Enter the PIN you receive, and then choose Continue.
+#### How Amazon S3 Tables Work  
 
-#### Choose an AWS Support plan
+- **Purpose-Built Storage for Tabular Data**  
+  S3 Tables are specifically designed for storing structured data in the **Apache Parquet** format, providing better data organization and analytics performance.  
 
-- On the **Select a Support Plan** page, choose one of the available Support plans. For a description of the available Support plans and their benefits, see [Compare AWS Support Plans](https://aws.amazon.com/premiumsupport/plans/).
+- **Automated Data Optimization**  
+  S3 Tables automatically optimize stored data by compacting Parquet objects. This compaction process enhances query performance and reduces storage costs.  
 
-#### Wait for your account to be activated
+#### Benefits of Amazon S3 Tables  
 
+- **Outstanding Scalability**  
+  Simplify data lake management at any scale, from small projects to operating thousands of tables in Iceberg environments.  
 
+- **Enhanced Performance**  
+  Achieve up to **3x faster query speeds** through continuous table optimization compared to unmanaged Iceberg tables, and up to **10x higher transaction throughput** than Iceberg tables stored in standard S3 buckets.  
 
-After you choose a Support plan, a confirmation page indicates that your account is being activated. Accounts are usually activated within a few minutes, but the process might take up to 24 hours. \
-You can sign in to your AWS account during this time. The AWS home page might display a Complete Sign Up button during this time, even if you've completed all the steps in the sign-up process. \
-Once your account is fully activated, you will receive a confirmation email. Check your email and spam folder for the confirmation email. After you receive this email, you have full access to all AWS services.
+- **Fully Managed Service**  
+  Automatically handles maintenance tasks such as **compaction**, snapshot management, and removing unreferenced files to optimize query efficiency and long-term costs.  
+
+- **Seamless Integration**  
+  Leverage advanced Iceberg analytics capabilities with familiar AWS services like **Amazon Athena**, **Redshift**, and **EMR**, while maintaining compatibility with popular open-source tools.  
+
+- **Simplified Security**  
+  Manage tables as first-class AWS resources, allowing you to easily apply permissions and govern access securely.  
+
+![s3-benefit](/images/1-introduction/image-2.png)  
+
+#### Key Components of S3 Tables  
+
+1. **Table Buckets**: Special S3 buckets designed to store analytical data, supporting Iceberg-managed tables with various schemas.  
+2. **Tables**: Structured datasets organized in table buckets. These tables include features like automatic compaction, unreferenced file cleanup, and snapshot management.  
+3. **Namespaces**: Logical groupings of tables within a bucket, enabling efficient data organization and classification.  
+
+#### AWS Glue Data Catalog  
+
+[**AWS Glue Data Catalog**](https://docs.aws.amazon.com/prescriptive-guidance/latest/serverless-etl-aws-glue/aws-glue-data-catalog.html#:~:text=The%20AWS%20Glue%20Data%20Catalog,formats%2C%20schemas%2C%20and%20sources.) serves as a centralized metadata repository that stores information about data locations, schemas, and runtime parameters. Acting as an index, it simplifies querying and can be registered as a data source in **Lake Formation**.  
+
+Glue Data Catalog seamlessly integrates **table buckets, namespaces, and tables** into metadata objects, making data management efficient and user-friendly.  
+
+![glue-data-catalog](/images/1-introduction/image.png)  
+
+#### AWS Analytics Services Integrated with S3 Tables  
+
+1. [**Amazon Athena**](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-athena.html): A serverless SQL query service to directly interact with S3 without requiring any infrastructure setup.  
+2. [**Amazon Redshift**](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-redshift.html): A petabyte-scale data warehouse for efficient analytics, with Redshift Serverless enabling access without complex configurations.  
+3. [**Amazon EMR**](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-emr.html): A big data platform that supports frameworks like Apache Hadoop and Spark for large-scale data processing.  
+4. [**Amazon QuickSight**](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-quicksight.html): A data visualization tool offering dynamic dashboards, supported by the scalable **SPICE Engine** for fast performance.  
+5. [**Amazon Data Firehose**](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-firehose.html): A real-time streaming data service integrated with S3, Redshift, OpenSearch, and Iceberg Tables.  
+
+![aws-analytics-services](/images/1-introduction/image-3.png)  

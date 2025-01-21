@@ -1,44 +1,80 @@
----
-title: "Deploying Golang Application on EC2 Workshop"
-date: "`r Sys.Date()`"
-weight: 1
-chapter: false
----
+# **Managing and Querying Data with Amazon S3 Tables**  
 
-# Creating your first AWS account
+#### **Overview**  
 
-#### Overview
-In this first lab, you will be creating your new **AWS** account and use Multi-factor Authentication (**MFA**) to improve your account security. Next, you will create an **Administrator Group** and **Admin User** to manage access to resources in your account instead of using the root user. \
-Finally, we will step through account authentication with **AWS Support** in the event you experience authentication problems.
+In this workshop, we will explore **[Amazon S3 Tables](https://aws.amazon.com/s3/features/tables/)**—an optimized solution for storing tabular data, specifically designed to meet the needs of **large-scale data analytics**. Typical use cases include storing daily transaction data and processing streaming data. To make data querying convenient, Amazon S3 Tables seamlessly integrates with powerful tools like **Amazon Athena, Amazon EMR, and Apache Spark**.  
 
-#### AWS Account
-**An AWS account** is the basic container for all the AWS resources you can create as an AWS customer. By default, each AWS account will have a _root user_. The _root user_ has full access within your AWS account, and root user permissions cannot be limited. When you first create your AWS account, you will be assessing it as the _root user_.
+{{< youtube bLB_cl-u3jM >}}  
 
-{{% notice note%}}
-As a best practice, do not use the AWS account _root user_ for any task where it's not required. Instead, create a new IAM user for each person that requires administrator access. Thereafter, the users in the administrators user group should set up the user groups, users, and so on, for the AWS account. All future interaction should be through the AWS account's users and their own keys instead of the root user. However, to perform some account and service management tasks, you must log in using the root user credentials.
-{{% /notice%}}
+---  
 
-#### Multi-Factor Authentication (MFA)
-**MFA** adds extra security because it requires users to provide unique authentication from an AWS supported MFA mechanism in addition to their regular sign-in credentials when they access AWS websites or services.
+#### **Objectives**  
 
-#### IAM User Group 
-An **IAM user group** is a collection of IAM users. User groups let you specify permissions for multiple users, which can make it easier to manage the permissions for those users. Any user in that user group automatically has the permissions that are assigned to the user group. 
+- Learn how to organize and manage data using Amazon S3 Tables.  
+- Create Amazon S3 Tables via the **AWS Management Console** and the **Command Line Interface (CLI)**.  
+- Practice querying data by integrating with services like **Amazon Athena, Amazon EMR, or Apache Spark**.  
+- Develop AWS resource management skills, including resource cleanup to optimize costs after completion.  
 
-#### IAM User
-An **IAM user** is an entity that you create in AWS to represent the person or application that uses it to interact with AWS. A user in AWS consists of a name and credentials. \
-Please note that an IAM user with administrator permissions is not the same thing as the AWS account root user.
+---  
 
+#### **Requirements**  
 
-#### AWS Support
-AWS Basic Support offers all AWS customers access to our Resource Center, Service Health Dashboard, Product FAQs, Discussion Forums, and Support for Health Checks – at no additional charge. Customers who desire a deeper level of support can subscribe to AWS Support at the Developer, Business, or Enterprise level.
+Before starting, ensure you have:  
 
-Customers who choose AWS Support gain one-on-one, fast-response support from AWS engineers. The service helps customers use AWS's products and features. With pay-by-the-month pricing and unlimited support cases, customers are freed from long-term commitments. Customers with operational issues or technical questions can contact a team of support engineers and receive predictable response times and personalized support.
+1. **AWS Account**:  
+   - Register and activate an **IAM User** with necessary access permissions.  
+2. **Basic Knowledge**:  
+   - Familiarity with Linux, Amazon S3, IAM, and EC2.  
+3. **Work Environment**:  
+   - A personal computer with administrative access and a stable internet connection.  
+   - The following tools installed:  
+     - **AWS CLI v2**: For interacting with AWS via command line.  
+     - **jq**: A tool for processing JSON files.  
 
+---  
 
-#### Main Content
+### **Pricing**  
 
-1. [Creating a new AWS Account](1-create-new-aws-account/)
-2. [Setting up MFA for the AWS Account root user](2-MFA-Setup-For-AWS-User-(root))
-3. [Creating an Administrator Accounts and Groups](3-create-admin-user-and-group/)
-4. [Getting support for Account Authentication](4-verify-new-account/)
-<!-- need to remove parenthesis for path in Hugo 0.88.1 for Windows-->
+{{% notice warning %}}  
+**NOTE:** This workshop may incur costs. To optimize your budget, ensure resources are tightly managed and cleaned up after completion.  
+{{% /notice %}}  
+
+#### **Resources Used**  
+For this workshop, we’ll use a **t2.medium EC2 instance**, which provides:  
+- **2 vCPUs**: Ideal for data management and processing tasks.  
+- **4 GB RAM**: Suitable for efficient data querying and manipulation.  
+
+#### **Costs Related to S3 Tables**  
+1. **Storage Pricing**:  
+   - $0.025 per **1,000 objects**.  
+
+2. **Requests Pricing**:  
+   - $0.005 per **1,000 requests** (PUT, COPY, POST, LIST).  
+   - $0.0004 per **1,000 requests** (GET, SELECT).  
+
+3. **Maintenance Pricing**:  
+   - **Compaction - Objects**: $0.004 per **1,000 objects** processed.  
+   - **Compaction - Data Processed**: $0.05 per GB of data processed.  
+
+![s3-tables-pricing](/images/image.png)  
+
+#### **Estimated Total Costs**  
+- **EC2 Instance**: At a rate of **$0.0464/hour**, the total cost for **24 hours** is approximately **$1.11/day**.  
+- **S3 Tables**: Costs will depend on the volume of data and the number of requests during operations.  
+
+#### **Cost Optimization Tips**  
+- Limit the duration of the workshop and clean up resources immediately after completion.  
+- With proper management, total costs can be kept to just a few dollars, ensuring an efficient and budget-friendly experience.  
+
+---  
+
+### **Main Content**  
+
+1. [Introduction](1-introduction)  
+2. [Preparation](<2-preparation-root/>)  
+3. [Accessing Buckets and Tables via AWS Management Console](3-accessing-buckets-and-tables-via-command-line/)  
+4. [Accessing Buckets and Tables via Command Line Interface](4-accessing-buckets-and-tables-via-aws-management-console/)  
+5. [Conclusion](5-conclusion/)  
+6. [Cleaning Up Resources](6-clean-up-resources/)  
+
+![S3-tables-architecture](/images/S3-Tables-Architecture.png)  

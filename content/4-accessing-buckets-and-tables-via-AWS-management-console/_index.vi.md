@@ -13,26 +13,26 @@ chapter: false
 1. **Truy cập Amazon S3**  
    Đăng nhập vào AWS Management Console, sau đó chọn **Table Buckets** từ thanh điều hướng bên trái.
 
-   ![alt text](image.png)
+   ![s3-dashboard](/images/4-accessing-buckets-and-tables-via-AWS-management-console/image.png)
 
 2. **Kích hoạt tích hợp dịch vụ**  
    Trước khi tạo Bucket, hãy nhấn **Enable Integration** để kích hoạt tích hợp S3 Tables với các dịch vụ phân tích dữ liệu của AWS.
 
-   ![alt text](image-1.png)
+   ![enable-integration](/images/4-accessing-buckets-and-tables-via-AWS-management-console/image-1.png)
 
    Khi quá trình tích hợp hoàn tất, giao diện sẽ hiển thị trạng thái **Integration enabled**.
 
-   ![alt text](image-2.png)
+   ![enable-successfully](/images/4-accessing-buckets-and-tables-via-AWS-management-console/image-2.png)
 
 3. **Tạo Table Bucket**  
    Nhấn **Create Table Bucket**, nhập **Table Bucket Name** trong giao diện cấu hình, sau đó nhấn **Create Table** để hoàn tất.
 
-   ![alt text](image-3.png)
+   ![create-table-bucket](/images/4-accessing-buckets-and-tables-via-AWS-management-console/image-3.png)
 
 4. **Xác minh Bucket vừa tạo**  
    Kiểm tra danh sách các Table Buckets để xác nhận Bucket của bạn đã được tạo thành công.
 
-   ![alt text](image-4.png)
+   ![review-created-bucket](/images/4-accessing-buckets-and-tables-via-AWS-management-console/image-4.png)
 
 ---
 
@@ -47,43 +47,46 @@ chapter: false
    ```bash
    spark-shell \
    --packages org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.6.1,software.amazon.s3tables:s3-tables-catalog-for-iceberg-runtime:0.1.3,software.amazon.awssdk:s3:2.20.42,software.amazon.awssdk:sts:2.20.42,software.amazon.awssdk:kms:2.20.42,software.amazon.awssdk:glue:2.20.42,software.amazon.awssdk:dynamodb:2.20.42 \
-   --conf spark.sql.catalog.s3tablesbucket=org.apache.iceberg.spark.SparkCatalog \
-   --conf spark.sql.catalog.s3tablesbucket.catalog-impl=software.amazon.s3tables.iceberg.S3TablesCatalog \
-   --conf spark.sql.catalog.s3tablesbucket.warehouse=<aws:s3tables:us-east-1:0123456789012:bucket/jbarr-table-bucket-3> \
-   --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
+   --conf scala> spark.sql.catalog.s3tablesbucket=org.apache.iceberg.spark.SparkCatalog \
+   --conf scala> spark.sql.catalog.s3tablesbucket.catalog-impl=software.amazon.s3tables.iceberg.S3TablesCatalog \
+   --conf scala> spark.sql.catalog.s3tablesbucket.warehouse=<aws:s3tables:us-east-1:0123456789012:bucket/jbarr-table-bucket-3> \
+   --conf scala> spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
    ```
 
-   ![alt text](image-5.png)
+   ![accessing-spark-shell](/images/3-accessing-buckets-and-tables-via-command-line/image-6.png)
 
 2. **Tạo Namespace**  
-   Dùng lệnh sau để tạo namespace (ví dụ: `mydata`):
+    Dùng lệnh sau để tạo namespace (ví dụ: `mydata`):
 
    ```scala
-   spark.sql("""CREATE NAMESPACE IF NOT EXISTS s3tablesbucket.mydata""")
-   spark.sql("SHOW NAMESPACES IN s3tablesbucket").show()
+   scala> spark.sql("""CREATE NAMESPACE IF NOT EXISTS s3tablesbucket.mydata""")
+   res1: org.apache.spark.sql.DataFrame = []
+
+   scala> spark.sql("SHOW NAMESPACES IN s3tablesbucket").show()
+   +----------+
+   |namespace |
+   +----------+
+   | mydata   |
+   +----------+
    ```
 
-   ![alt text](image-6.png)
-
-3. **Tạo Table**  
+3. **Tạo Table**
    Tạo bảng trong namespace đã tạo:
 
    ```scala
-   spark.sql("""CREATE TABLE IF NOT EXISTS s3tablesbucket.mydata.table1
+   scala> spark.sql("""CREATE TABLE IF NOT EXISTS s3tablesbucket.mydata.table1
    (id INT,
-    name STRING,
-    value INT)
+   name STRING,
+   value INT)
    USING iceberg
    """)
    ```
-
-   ![alt text](image-7.png)
 
 4. **Thêm dữ liệu mẫu**  
    Chèn dữ liệu mẫu vào bảng:
 
    ```scala
-   spark.sql("""INSERT INTO s3tablesbucket.mydata.table1
+   scala> spark.sql("""INSERT INTO s3tablesbucket.mydata.table1
      VALUES
      (1, 'Alice', 100),
      (2, 'Bob', 200),
@@ -91,16 +94,14 @@ chapter: false
      """)
    ```
 
-   <![alt text](image-8.png)
-
 5. **Truy vấn dữ liệu**  
    Truy vấn dữ liệu từ bảng để kiểm tra:
 
    ```scala
-   spark.sql("SELECT * FROM s3tablesbucket.mydata.table1").show()
+   scala> spark.sql("SELECT * FROM s3tablesbucket.mydata.table1").show()
    ```
 
-   ![alt text](image-9.png)
+   ![query-data](/images/4-accessing-buckets-and-tables-via-AWS-management-console/image-9.png)
 
 ---
 

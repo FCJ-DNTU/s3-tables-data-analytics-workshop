@@ -1,53 +1,74 @@
-+++
-title = "Getting Support for Account Authentication"
-date = 2020
-weight = 4
-chapter = false
-pre = "<b>4. </b>"
-+++
+---
+title: "Resource Cleanup"
+date: "`r Sys.Date()`"
+weight: 6
+pre: "<b>6. </b>"
+chapter: false
+---
 
-During AWS account setup, sometimes problems may arise when validating contact number information, such as failure to receive SMS messages or calls from the AWS. To remediate this issue, please follow the following steps to complete the vation of the account information:
+### 6. Resource Cleanup
 
-**Content:**
-- [Verify your account information](#verify-your-account-information)
-- [Create a support case with AWS Support](#create-a-support-case-with-aws-support)
+Congratulations on completing the workshop! Now, let's proceed with cleaning up resources to avoid unnecessary costs.
 
-#### Verify your account information
+The cleanup process will follow this order: Delete Table > Delete Namespace > Delete S3 Table Bucket > Delete EC2 Instance > Delete Security Group > Delete VPC > Delete IAM Role.
 
-Kindly check your account details again and make sure they are entered correctly:
-  - Check that the phone number and international calling code are correctly enetered to receive SMS or calls.
-  - If you use a mobile phone, check your phone to make sure you are still within coverage to receive SMS or calls.
-  - Check that the payment method information has been entered correctly.
+Start by SSHing into your EC2 instance.
 
-#### Create a support case with AWS Support
+1. **Delete Table**
 
- If you are still not able to receive an SMS message or authentication call even after verifying your account information, please contact AWS Support to assist you in manually activating your account.
+   Replace `<arn:aws:s3tables:us-east-1:123456789012:bucket/jbarr-table-bucket-2>` with your bucket's ARN.
 
-1. Go to the [AWS Support Console](https://aws.amazon.com/support/) and select **Create case**.
+```shell
+aws s3tables delete-table \
+--table-bucket-arn <arn:aws:s3tables:us-east-1:123456789012:bucket/jbarr-table-bucket-2> \
+--namespace mydata --name table1
+```
 
-![AWS Support](/images/1-account-setup/1.png?width=90pc)
+2. **Delete Namespace**
 
-2. Select **Account and billing support** and enter the support information:
-   
-   **Type:** Select **Account**.
-    
-   **Category:** Select **Activation**.
-   
-   **Subject:** Write your encounter briefly (e.g. **Did not receive an SMS message or call for verification**)
-   
-   **Description:** Provide details of your situation.
-   
-   **Attachments:** Attach any images which may lend greater clarify to the situation.
+```shell
+aws s3tables delete-namespace \
+--table-bucket-arn <arn:aws:s3tables:us-east-1:123456789012:bucket/jbarr-table-bucket-2> \
+--namespace mydata
+```
 
-![AWS Support](/images/1-account-setup/2.png?width=90pc)
+3. **Delete S3 Table Buckets**
 
-3. Under **Contact options**, select **Chat** in **Contact methods**.
+```shell
+aws s3tables delete-table-bucket \
+--table-bucket-arn <arn:aws:s3tables:us-east-1:123456789012:bucket/jbarr-table-bucket-2>
+```
 
-![AWS Support](/images/1-account-setup/3.png?width=90pc)
+![delete-s3-table-buckets](/images/6-clean-up-resources/image.png)
 
-4. Click **Submit**.
-5. The AWS Support team will contact you and assist in activating your account.
+4. **Delete EC2 Instance**
 
-{{% notice note%}}
-You can create support requests with AWS Support even if your account is not activated.
-{{% /notice%}}
+   Go to the EC2 Dashboard, select your EC2 instance, and use the "Terminate" action to delete the instance.
+
+![delete-ec2-instance-1](/images/6-clean-up-resources/image-1.png)
+
+![delete-ec2-instance-2](/images/6-clean-up-resources/image-2.png)
+
+5. **Delete Security Group**
+
+   Go to the VPC Dashboard, select "Security Groups" in the left navigation pane, select the `demo-s3-tables-sg` security group, click on the dropdown actions, and select "Delete Security Group."
+
+![delete-sg](/images/6-clean-up-resources/image-3.png)
+
+6. **Delete VPC**
+
+   Go to the VPC Dashboard, select "Your VPCs," choose the `demo-s3-table-vpc`, click on the dropdown actions, select "Delete VPC," type `delete` to confirm, and proceed with the deletion.
+
+![delete-vpc-1](/images/6-clean-up-resources/image-4.png)
+
+![delete-vpc-2](/images/6-clean-up-resources/image-5.png)
+
+7. **Delete IAM Role**
+
+   Go to the IAM Service Dashboard, select "Roles" in the left navigation pane, search for `ec2-s3-tables-role`, and select "Delete."
+
+![delete-iam-role](/images/6-clean-up-resources/image-6.png)
+
+---
+
+Congratulations again! If you encounter any issues or need assistance troubleshooting, feel free to reach out to me via [LinkedIn](https://linkedin.com/in/minhnghia2k3) or email me at [nghialm2603@gmail.com](mailto:nghialm2603@gmail.com).

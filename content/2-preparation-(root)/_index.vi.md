@@ -14,8 +14,7 @@ Trong bước này, chúng ta sẽ thiết lập môi trường cần thiết, b
 Vì **Amazon S3 Tables** là tính năng mới nên chỉ hỗ trợ 2 regions: US East (Ohio, N. Virginia) và US West (Oregon) AWS Regions. Ở bài workshop này mình sẽ sử dụng region **US East (Ohio, N. Virginia)**
 {{% /notice %}}
 
-<!-- Hình ảnh 1 -->
-![region](image.png)
+![region](/images/2-preparation-(root)/image.png)
 
 #### Nội Dung
 1. [Thiết lập VPC](1-setting-up-vpc)

@@ -20,8 +20,6 @@ Sau khi thiết lập các công cụ cần thiết, bạn có thể tạo và q
    "arn:aws:s3tables:us-east-2:123456789012:bucket/jbarr-table-bucket-2"
    ```
 
-![alt text](image.png)
-
 2. **Thiết lập Biến Môi Trường**  
    Lưu ARN của Bucket vào một biến môi trường để dễ thao tác:
 
@@ -34,26 +32,28 @@ Sau khi thiết lập các công cụ cần thiết, bạn có thể tạo và q
 
    ```bash
    $ aws s3tables list-table-buckets | jq .tableBuckets[].arn
+   "arn:aws:s3tables:us-east-2:123456789012:bucket/jbarr-table-bucket-2"
    ```
-
-   Kết quả hiển thị danh sách ARN của các Table Buckets:
-
-![alt text](image-1.png)
 
 ---
 
 #### Cài đặt và Sử dụng Apache Spark để Quản lý Tables
 
-Bạn có thể thao tác với các Tables trong Bucket thông qua Apache Spark.
+Bạn có thể thao tác với các Tables trong Bucket thông qua [Apache Spark](https://spark.apache.org/).
 
 1. **Cài đặt Java 17**  
-   Apache Spark yêu cầu Java để chạy. Cài đặt Java bằng lệnh sau:
+
+   {{% notice note %}}
+   [Spark runs on Java 8/11/17](https://spark.apache.org/docs/latest/#:~:text=Spark%20runs%20on%20Java%208/11/17)
+   {{% /notice %}}
+
+   Apache Spark yêu cầu Java 8/11/17 để chạy. Cài đặt **Java 17** bằng lệnh sau:
 
    ```bash
    $ sudo dnf install java-17-amazon-corretto
    ```
 
-   ![alt text](image-2.png)
+   ![install-java-17](/images/3-accessing-buckets-and-tables-via-command-line/image-2.png)
 
 2. **Tải và Cài đặt Apache Spark**  
    Tải phiên bản mới nhất của Apache Spark:
@@ -63,7 +63,7 @@ Bạn có thể thao tác với các Tables trong Bucket thông qua Apache Spark
    $ tar -xvf spark-3.5.4-bin-hadoop3.tgz
    ```
 
-![alt text](image-3.png)
+![install-spark](/images/3-accessing-buckets-and-tables-via-command-line/image-3.png)
 
 Thêm đường dẫn Spark binary vào `PATH`:
 
@@ -77,7 +77,7 @@ Thêm dòng sau vào cuối file:
 export PATH=$PATH:/home/ec2-user/spark-3.5.4-bin-hadoop3/bin/
 ```
 
-![alt text](image-4.png)
+![export-spark](/images/3-accessing-buckets-and-tables-via-command-line/image-4.png)
 
 Lưu và thoát (`ESC` > `:wq`), sau đó kiểm tra phiên bản Spark:
 
@@ -85,7 +85,7 @@ Lưu và thoát (`ESC` > `:wq`), sau đó kiểm tra phiên bản Spark:
 $ spark-shell --version
 ```
 
-![alt text](image-5.png)
+![spark-version](/images/3-accessing-buckets-and-tables-via-command-line/image-5.png)
 
 3. **Sử dụng Spark-Shell để Quản lý Tables**  
     Khởi chạy Spark-Shell với Apache Iceberg và cấu hình cần thiết. Thay ARN bằng giá trị ARN của Bucket của bạn:
@@ -101,7 +101,7 @@ $ spark-shell --version
    --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
    ```
 
-   ![alt text](image-6.png)
+   ![accessing-spark-shell](/images/3-accessing-buckets-and-tables-via-command-line/image-6.png)
 
 4. **Tạo Namespace và Table**  
    Tạo namespace và table trong Bucket:
@@ -112,7 +112,7 @@ $ spark-shell --version
    (id INT, name STRING, value INT) USING iceberg""")
    ```
 
-   ![alt text](image-7.png)
+   ![creating-namespace-and-table](/images/3-accessing-buckets-and-tables-via-command-line/image-7.png)
 
 5. **Chèn và Truy Vấn Dữ Liệu**  
    Chèn dữ liệu mẫu và truy vấn để kiểm tra:
@@ -127,7 +127,7 @@ $ spark-shell --version
    spark.sql("SELECT * FROM s3tablesbucket.mydata.table1").show()
    ```
 
-   ![alt text](image-8.png)
+   ![insert-data](/images/3-accessing-buckets-and-tables-via-command-line/image-8.png)
 
 ---
 

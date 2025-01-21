@@ -1,5 +1,5 @@
 ---
-title: "Triển khai Linux Elastic Compute Cloud"
+title: "Triển khai Linux Elastic Compute Cloud (EC2)"
 date: "`r Sys.Date()`"
 weight: 2
 pre: "<b>2.2 </b>"
@@ -17,7 +17,7 @@ Security Group hoạt động ở Subnet Level, quản lý inbound và outbound 
 
 1. Truy cập **VPC Dashboard** > **Security Groups** > Chọn **Create Security Group**.
 
-![alt text](image.png)
+   ![vpc-dashboard](/images/2-preparation-(root)/2-deploying-linux-EC2/image.png)
 
 2. Trong giao diện **Create Security Group**:
 
@@ -29,12 +29,13 @@ Security Group hoạt động ở Subnet Level, quản lý inbound và outbound 
 
 3. Nhấn **Create Security Group**.
 
-![alt text](image-1.png)
-![alt text](image-2.png)
+   ![create-sg-1](/images/2-preparation-(root)/2-deploying-linux-EC2/image-1.png)
+
+   ![create-sg-2](/images/2-preparation-(root)/2-deploying-linux-EC2/image-2.png)
 
 4. Kiểm tra giao diện khi tạo thành công.
 
-![alt text](image-3.png)
+   ![create-sg-successfully](/images/2-preparation-(root)/2-deploying-linux-EC2/image-3.png)
 
 ---
 
@@ -53,7 +54,7 @@ Security Group hoạt động ở Subnet Level, quản lý inbound và outbound 
 
 1. Truy cập **EC2 Dashboard** > Nhấn **Launch Instance**.
 
-![alt text](image-4.png)
+   ![launch-ec2-instance](/images/2-preparation-(root)/2-deploying-linux-EC2/image-4.png)
 
 2. Trong giao diện **Launch an Instance**:
    - **Name and Tags**: Nhập tên instance.
@@ -61,15 +62,15 @@ Security Group hoạt động ở Subnet Level, quản lý inbound và outbound 
    - **Instance Type**: Chọn **t2.medium**.
    - **Key Pair**: Nhấn **Create New Key Pair**.
 
-![alt text](image-5.png)
+   ![creating-ec2-1](/images/2-preparation-(root)/2-deploying-linux-EC2/image-5.png)
 
-![alt text](image-6.png)
+   ![creating-ec2-2](/images/2-preparation-(root)/2-deploying-linux-EC2/image-6.png)
 
 3. Trong giao diện **Create Key Pair**:
    - Điền **Key Pair Name**, chọn **RSA**, định dạng **.pem**.
    - Nhấn **Create Key Pair** và lưu tệp vào thư mục máy của bạn.
 
-![alt text](image-7.png)
+   ![create-key-paris](/images/2-preparation-(root)/2-deploying-linux-EC2/image-7.png)
 
 4. **Network Settings**:
 
@@ -81,11 +82,11 @@ Security Group hoạt động ở Subnet Level, quản lý inbound và outbound 
 
 5. Nhấn **Launch Instance** để khởi tạo.
 
-![alt text](image-8.png)
+   ![network-settings](/images/2-preparation-(root)/2-deploying-linux-EC2/image-8.png)
 
 6. Kiểm tra giao diện khi EC2 được tạo thành công.
 
-![alt text](image-9.png)
+   ![create-ec2-successfully](/images/2-preparation-(root)/2-deploying-linux-EC2/image-9.png)
 
 ---
 
@@ -98,13 +99,13 @@ Security Group hoạt động ở Subnet Level, quản lý inbound và outbound 
 ssh -i "demo-s3-tables-kp.pem" ec2-user@ec2-<instance-public-ip>.compute-<region>.amazonaws.com
 ```
 
-![alt text](image-10.png)
+![ec2-ssh](/images/2-preparation-(root)/2-deploying-linux-EC2/image-10.png)
 
 3. Truy cập thư mục chứa key pair đã lưu, dán lệnh vào terminal để kết nối.
 
 4. Xác nhận kết nối thành công.
 
-![alt text](image-11.png)
+![ssh-successfully](/images/2-preparation-(root)/2-deploying-linux-EC2/image-11.png)
 
 ---
 
@@ -114,25 +115,25 @@ ssh -i "demo-s3-tables-kp.pem" ec2-user@ec2-<instance-public-ip>.compute-<region
 
 1. Truy cập **IAM Dashboard** > Chọn **Roles** > **Create Role**.
 
-![alt text](image-12.png)
+![creating-role](/images/2-preparation-(root)/2-deploying-linux-EC2/image-12.png)
 
 2. Trong **Select Trusted Entity**:
    - Chọn **AWS Service** > Use case: **EC2**.
 
-![alt text](image-13.png)
+![creating-role-interface](/images/2-preparation-(root)/2-deploying-linux-EC2/image-13.png)
 
 3. Trong **Add Permissions**:
    - Tìm kiếm và thêm quyền **AmazonS3FullAccess** và **AmazonS3TablesFullAccess**.
 
-![alt text](image-14.png)
+![add-permissions](/images/2-preparation-(root)/2-deploying-linux-EC2/image-14.png)
 
    - Nhấn **Next** để review và đặt tên cho role.
 
-![alt text](image-15.png)
+![reviewing-and-naming](/images/2-preparation-(root)/2-deploying-linux-EC2/image-15.png)
 
    - Nhấn **Create Role** để hoàn tất.
 
-![alt text](image-16.png)
+![create-role-successfully](/images/2-preparation-(root)/2-deploying-linux-EC2/image-16.png)
 
 
 
@@ -140,12 +141,12 @@ ssh -i "demo-s3-tables-kp.pem" ec2-user@ec2-<instance-public-ip>.compute-<region
 
 1. Truy cập chi tiết EC2 Instance, chọn **Actions** > **Security** > **Modify IAM Role**.
 
-![alt text](image-17.png)
+![ec2-details](/images/2-preparation-(root)/2-deploying-linux-EC2/image-17.png)
 
 2. Trong giao diện **Modify IAM Role**, chọn role vừa tạo > Nhấn **Update IAM Role**.
 
-![alt text](image-18.png)
+![update-iam-role](/images/2-preparation-(root)/2-deploying-linux-EC2/image-18.png)
 
 3. Kiểm tra giao diện khi gắn IAM Role thành công.
 
-![alt text](image-19.png)
+![attach-role-successfully](/images/2-preparation-(root)/2-deploying-linux-EC2/image-19.png)

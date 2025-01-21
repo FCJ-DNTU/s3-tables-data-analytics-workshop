@@ -1,53 +1,38 @@
-+++
-title = "Getting Support for Account Authentication"
-date = 2020
-weight = 4
-chapter = false
-pre = "<b>4. </b>"
-+++
+---
+title: "Conclusion"
+date: "`r Sys.Date()`"
+weight: 5
+pre: "<b>5. </b>"
+chapter: false
+---
 
-During AWS account setup, sometimes problems may arise when validating contact number information, such as failure to receive SMS messages or calls from the AWS. To remediate this issue, please follow the following steps to complete the vation of the account information:
+### 5. Conclusion
 
-**Content:**
-- [Verify your account information](#verify-your-account-information)
-- [Create a support case with AWS Support](#create-a-support-case-with-aws-support)
+This workshop guided you through the process of creating and managing **Amazon S3 Tables** using both the AWS Management Console and CLI. Here's a summary of the steps covered:
 
-#### Verify your account information
+- Created **S3 Table Buckets** for structured data storage.
+- Integrated **Apache Spark** with the **S3 Tables Catalog** for querying and processing large datasets.
+- Inserted and queried sample data in **Iceberg Tables** through Spark-Shell.
 
-Kindly check your account details again and make sure they are entered correctly:
-  - Check that the phone number and international calling code are correctly enetered to receive SMS or calls.
-  - If you use a mobile phone, check your phone to make sure you are still within coverage to receive SMS or calls.
-  - Check that the payment method information has been entered correctly.
+With **Amazon S3 Tables**, you can unlock the full potential of big data and take advantage of the AWS ecosystem's capabilities.
 
-#### Create a support case with AWS Support
+#### Benefits of Amazon S3 Tables:
 
- If you are still not able to receive an SMS message or authentication call even after verifying your account information, please contact AWS Support to assist you in manually activating your account.
+1. **Optimized Query Performance**: With partitioning and efficient data processing, S3 Tables reduce query time, even for large datasets.
+2. **Automated Management**: S3 Tables handle metadata, data versioning, and schema updates automatically.
+3. **Seamless Integration**: Work seamlessly with AWS analytics services such as **AWS Glue**, **Amazon Athena**, and **Amazon EMR**.
 
-1. Go to the [AWS Support Console](https://aws.amazon.com/support/) and select **Create case**.
+#### Notes:
 
-![AWS Support](/images/1-account-setup/1.png?width=90pc)
+Currently, **Amazon S3 Tables** is available in select AWS regions (such as **US East (N. Virginia)** and **US West (Oregon)**). Check the official [AWS documentation](https://aws.amazon.com/s3/features/tables/) for more details on availability.
 
-2. Select **Account and billing support** and enter the support information:
-   
-   **Type:** Select **Account**.
-    
-   **Category:** Select **Activation**.
-   
-   **Subject:** Write your encounter briefly (e.g. **Did not receive an SMS message or call for verification**)
-   
-   **Description:** Provide details of your situation.
-   
-   **Attachments:** Attach any images which may lend greater clarify to the situation.
+#### References:
 
-![AWS Support](/images/1-account-setup/2.png?width=90pc)
+{{< youtube eztA5VYH2nM >}}
 
-3. Under **Contact options**, select **Chat** in **Contact methods**.
-
-![AWS Support](/images/1-account-setup/3.png?width=90pc)
-
-4. Click **Submit**.
-5. The AWS Support team will contact you and assist in activating your account.
-
-{{% notice note%}}
-You can create support requests with AWS Support even if your account is not activated.
-{{% /notice%}}
+- **Amazon S3 Tables**: [https://aws.amazon.com/s3/features/tables/](https://aws.amazon.com/s3/features/tables/)
+- **Amazon S3 Pricing**: [https://aws.amazon.com/s3/pricing/](https://aws.amazon.com/s3/pricing/)
+- **AWS Glue Data Catalog Documentation**: [https://docs.aws.amazon.com/glue/latest/dg/populate-data-catalog.html](https://docs.aws.amazon.com/glue/latest/dg/populate-data-catalog.html)
+- **New Amazon S3 Tables: Storage Optimized for Analytics Workloads**: [https://aws.amazon.com/blogs/aws/new-amazon-s3-tables-storage-optimized-for-analytics-workloads/](https://aws.amazon.com/blogs/aws/new-amazon-s3-tables-storage-optimized-for-analytics-workloads/)
+- **Querying Amazon S3 Tables with Apache Spark**: [https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-open-source-spark.html](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-open-source-spark.html)
+- **Using Amazon S3 Tables with AWS Analytics Services**: [https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-aws.html](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-aws.html)

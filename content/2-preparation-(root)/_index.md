@@ -1,16 +1,23 @@
-+++
-title = "MFA for AWS Accounts"
-date = 2021
-weight = 2
-chapter = false
-pre = "<b>2. </b>"
-+++
+---
+title: "Preparation"
+date: "`r Sys.Date()`"
+weight: 2
+pre : "<b>2. </b>"
+chapter: false
+---
 
-For increased security, we recommend that you configure multi-factor authentication (MFA) to help protect your AWS resources.
+# **Preparation**  
 
-You can enable **one** MFA device (of any kind) per root user or IAM user. 
+In this step, we will set up the required environment, including creating a **Custom VPC**, launching a **Linux EC2 Instance**, assigning an **IAM Role** to the EC2 instance, and installing tools such as **AWS CLI v2** and **jq** on the EC2 instance.  
 
-In this guide, we will go through 3 MFA options:
-1. [**Virtual MFA devices**](1-virtual-mfa-device) (applications) on your smartphone such as Microsoft Authenticator, Google Authenticator, or Okta Verify. 
-2. Physical [**U2F security key**](2-u2f-security-key) such as a YubiKey.
-3. [**Hardware MFA devices**](3-other-hardware-mfa-device) such as the Gemalto token.
+{{% notice info %}}  
+Since **Amazon S3 Tables** is a new feature, it is only supported in two regions: US East (Ohio, N. Virginia) and US West (Oregon). For this workshop, we will use the **US East (Ohio, N. Virginia)** region.  
+{{% /notice %}}  
+
+![region](/images/2-preparation-(root)/image.png)  
+
+### **Contents**  
+
+1. [Setting Up VPC](1-setting-up-vpc)  
+2. [Launching a Linux EC2 Instance](2-deploying-linux-EC2)  
+3. [Installing Related Tools](3-installing-tools)

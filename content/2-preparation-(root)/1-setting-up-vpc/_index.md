@@ -1,32 +1,64 @@
-+++
-title = "Virtual MFA Devices"
-date = 2021
-weight = 1
-chapter = false
-pre = "<b>2.1. </b>"
-+++
+---
+title: "Setting Up a Custom Virtual Private Cloud (VPC)"
+date: "`r Sys.Date()`"
+weight: 1
+pre: "<b>2.1 </b>"
+chapter: false
+---
 
-{{% notice note%}}
-To enable MFA, you need to log in to AWS using the root user. 
-{{% /notice%}}
+#### **What is a Virtual Private Cloud?**
 
-#### Activate virtual MFA devices via Console
+Amazon Virtual Private Cloud (VPC) allows you to create an isolated, private network on AWS. In this lab, we will set up a **VPC** with the following configuration:
 
-To set up and activate virtual MFA devices:
+- **2 Availability Zones (AZs)**
+- **2 Public Subnets** and **2 Private Subnets**
+- Assign an **EC2 Instance** to the **Public Subnet**, enabling Internet access via an Internet Gateway.
 
-1. Sign-in to the AWS Console.
-2. In the upper right corner, you will see your account name. Click the drop-down and select **My Security Credentials**.
+---
 
-![Virtual MFA Device](/images/1-account-setup/MySecurity_v1.png?width=15pc)
+#### **Steps to Deploy a Virtual Private Cloud**
 
-3. Expand **Multi-factor authentication (MFA)** and select **Active MFA**.
+#### **Step 1: Create a VPC**
 
-![MFA Section](/images/1-account-setup/MFA.png?width=90pc)
+1. Log in to the **AWS Management Console**.
+2. Navigate to the **VPC Dashboard** from the left-hand menu and select **Your VPCs**.
+3. Click on the **Create VPC** button.
 
-4. In Manage MFA Device, select **Virtual MFA device** then select **Continue**.
-5. Install a [compatible Authenticator application](https://aws.amazon.com/iam/features/mfa/#Virtual_MFA_Applications) on your phone.
-6. After installing the app, select **Show QR Code** and use your Authenticator application to scan the QR code.
-   - Sample MFA registration with _Microsoft Authenticator_:
-      ![MFA QR Scanner](/images/1-account-setup/MFAScannerQR.png?width=90pc)
-1. In the **MFA code 1** box, enter 6 numeric characters from the app. Wait 30 seconds or until the next refresh, then enter the next 6 characters into the **MFA Code 2** box and select **Assign MFA**.
-2. You have now completed activating your **virtual MFA device**!
+   ![vpc-dashboard](</images/2-preparation-(root)/1-setting-up-vpc/image.png>)
+
+4. In the **Create VPC** screen:
+   - Under **VPC Settings**, set **Resources to Create** to **VPC and more**.
+   - Enter a name for the VPC, keep the default settings, and click **Create VPC**.
+
+{{% notice tip %}}  
+Review the **Preview** pane on the right to check the resources being created, including the VPC, Subnets, Route Tables, and Network Connections.  
+{{% /notice %}}
+
+![creating-vpc](</images/2-preparation-(root)/1-setting-up-vpc/image-1.png>)
+
+5. Once completed, a success notification will appear.
+
+   ![successful-vpc](</images/2-preparation-(root)/1-setting-up-vpc/image-2.png>)
+
+6. Review your VPC details in the **VPC Details** tab.
+
+   ![vpc-details](</images/2-preparation-(root)/1-setting-up-vpc/image-3.png>)
+
+---
+
+#### **Step 2: Enable IPv4 Address Assignment for the Public Subnet**
+
+1. From the left-hand menu, go to **Subnets**.
+2. Locate the subnet with a name containing "public1".
+3. Select the subnet and click **Edit Subnet Settings**.
+
+   ![edit-subnet-settings](</images/2-preparation-(root)/1-setting-up-vpc/image-4.png>)
+
+4. In the **Subnet Settings** screen, enable **Auto-assign public IPv4 address**.
+5. Click **Save changes** to apply.
+
+   ![enable-ipv4](</images/2-preparation-(root)/1-setting-up-vpc/image-5.png>)
+
+6. A success message will confirm the changes.
+
+   ![assign-successfully](</images/2-preparation-(root)/1-setting-up-vpc/image-6.png>)
