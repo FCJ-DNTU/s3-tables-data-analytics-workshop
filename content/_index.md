@@ -1,4 +1,9 @@
-# **Managing and Querying Data with Amazon S3 Tables**  
+---
+title: "Managing and Querying Data with Amazon S3 Tables"
+date: "`r Sys.Date()`"
+weight: 1
+chapter: false
+---
 
 #### **Overview**  
 
